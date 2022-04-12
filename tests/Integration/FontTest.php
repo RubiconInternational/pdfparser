@@ -431,4 +431,22 @@ TEXT;
         $this->assertEquals(2573, $width);
         $this->assertEquals([], $missing);
     }
+
+    public function testParsePDFWithXDP(): void
+    {
+        $filename = $this->rootDir . '/samples/bugs/Issue499.pdf';
+        $parser = $this->getParserInstance();
+        $document = $parser->parseFile($filename);
+        $pages = $document->getPages();
+        $text = trim($pages[0]->getText());
+        $strings = [
+            'Please wait...',
+            'You can upgrade to the latest version of Adobe Reader for Windows®',
+            'For more assistance with Adobe Reader visit',
+            'If this message is not eventually replaced by the proper contents'
+        ];
+        foreach ($strings as $string) {
+            $this->assertStringContainsString($string, $text);
+        }
+    }
 }

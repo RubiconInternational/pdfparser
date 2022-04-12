@@ -320,9 +320,10 @@ class Font extends PDFObject
                 if ($add_braces) {
                     $text .= '(';
                 }
-
-                $part = pack('H*', $part);
-                $text .= ($add_braces ? preg_replace('/\\\/s', '\\\\\\', $part) : $part);
+                $part = @pack('H*', $part);
+                if ($part !== false) {
+                    $text .= ($add_braces ? preg_replace('/\\\/s', '\\\\\\', $part) : $part);
+                }
 
                 if ($add_braces) {
                     $text .= ')';
